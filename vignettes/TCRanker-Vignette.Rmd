@@ -1,0 +1,23 @@
+---
+title: "TCRanker-Vignette: Case Study"
+author: "Changsheng Li"
+package: TCRanker
+output:
+  BiocStyle::html_document
+vignette: >
+  %\VignetteIndexEntry{TCRanker-Vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(TCRanker)
+
+```
