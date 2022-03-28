@@ -11,7 +11,7 @@ TCRanker(
   assay = NULL,
   plot = TRUE,
   group = "none",
-  FUN = "top",
+  FUN = "mean",
   minClonSize = 5,
   filterCell = "CD8T",
   species = "auto",
@@ -43,8 +43,7 @@ recommended to be included.}
 
 \item{FUN}{Function used to aggregate scores of the same clonotype. It could
 be mean, median or customized functions that take a numeric vector or list
-as input. By default, it uses "top", an internal function that takes the
-mean of top 10\% scores (at least 2 cells).}
+as input. By default, it uses "mean".}
 
 \item{minClonSize}{Threshold of clonal size that would be taken into account,
 5 by default.}

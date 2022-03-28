@@ -1,7 +1,7 @@
 ## Function rankClonalScores
 #' @importFrom UCell ScoreSignatures_UCell
 rankClonalScores <- function(expMat, tcrVec, signature="default", groVec="none",
-                             species="auto", FUN="top", minClonSize=5){
+                             species="auto", FUN="mean", minClonSize=5){
 
     ## Preparing gene signature, Exhaustion signature as default
     if (all(signature=="default")) {

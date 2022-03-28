@@ -25,8 +25,7 @@
 #'  recommended to be included.
 #' @param FUN Function used to aggregate scores of the same clonotype. It could
 #'  be mean, median or customized functions that take a numeric vector or list
-#'  as input. By default, it uses "top", an internal function that takes the
-#'  mean of top 10\% scores (at least 2 cells).
+#'  as input. By default, it uses "mean".
 #' @param minClonSize Threshold of clonal size that would be taken into account,
 #'  5 by default.
 #' @param filterCell Name of the sub cell type to filter using \code{scGate},
@@ -39,7 +38,7 @@
 #' @export TCRanker
 
 TCRanker <- function(query, tcr, signature="default", assay=NULL, plot=TRUE,
-                     group="none", FUN="top", minClonSize=5,
+                     group="none", FUN="mean", minClonSize=5,
                      filterCell="CD8T", species="auto", ...) {
 }
 
