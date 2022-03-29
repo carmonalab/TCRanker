@@ -17,7 +17,7 @@
 #'  \code{SingleCellExperiment / Saurat} object. By default
 #'  "counts" for \code{SingleCellExperiment} and
 #'  "RNA" for \code{Seurat}.
-#' @param plot Logical, to plot the result or not, TRUE by default.
+#' @param plot Logical, to plot the result or not, FALSE by default.
 #' @param group Vector or a simple entry name (only when query is of
 #'  \code{SingleCellExperiment / Saurat} object). Extra grouping information
 #'  to be aggregated and included in the output. Same clonotype in different
@@ -33,11 +33,10 @@
 #' @param species Charactor, "mouse" or "human", optional.
 #' @return a data frame including clonal scores and ranking
 #'  (and annotations, if \code{annotation} was included)
-#' @examples
-#' TCRanker(query, tcr, plot=TRUE)
+#' 
 #' @export TCRanker
 
-TCRanker <- function(query, tcr, signature="default", assay=NULL, plot=TRUE,
+TCRanker <- function(query, tcr, signature="default", assay=NULL, plot=FALSE,
                      group="none", FUN="mean", minClonSize=5,
                      filterCell="CD8T", species="auto", ...) {
 }

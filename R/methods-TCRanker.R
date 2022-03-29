@@ -7,7 +7,7 @@ TCRanker_ANY <- function(query) {
 
 ## TCRanker method for Matrix/dgCMatrix or DF query
 #' @importFrom Matrix Matrix
-TCRanker_Mat_DF <- function(query, tcr, signature="default", plot=TRUE,
+TCRanker_Mat_DF <- function(query, tcr, signature="default", plot=FALSE,
                             group="none", FUN="mean", minClonSize=5,
                             species="auto") {
     ## Get expression matrix
@@ -31,7 +31,7 @@ TCRanker_Mat_DF <- function(query, tcr, signature="default", plot=TRUE,
 #' @importFrom SummarizedExperiment assay colData 
 #' @importFrom SingleCellExperiment SingleCellExperiment
 TCRanker_SCE <- function(query, tcr, signature="default", assay="counts",
-                         plot=TRUE, group="none", FUN="mean", minClonSize=5,
+                         plot=FALSE, group="none", FUN="mean", minClonSize=5,
                          filterCell="CD8T", species="auto") {
     ## Filter functional cluster
     if(filterCell != "None"){
@@ -81,7 +81,7 @@ TCRanker_SCE <- function(query, tcr, signature="default", assay="counts",
 ## TCRanker method for Seurat object query
 #' @importFrom SeuratObject GetAssayData FetchData
 TCRanker_Seurat <- function(query, tcr, signature="default", assay="RNA",
-                            plot=TRUE, group="none", FUN="mean", minClonSize=5,
+                            plot=FALSE, group="none", FUN="mean", minClonSize=5,
                             filterCell="CD8T", species="auto") {
     ## Filter functional cluster
     if(filterCell != "None"){

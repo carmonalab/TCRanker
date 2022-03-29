@@ -9,7 +9,7 @@ TCRanker(
   tcr,
   signature = "default",
   assay = NULL,
-  plot = TRUE,
+  plot = FALSE,
   group = "none",
   FUN = "mean",
   minClonSize = 5,
@@ -33,7 +33,7 @@ By default is the signature for exhaustion level of CD8+ T-cells.}
 "counts" for \code{SingleCellExperiment} and
 "RNA" for \code{Seurat}.}
 
-\item{plot}{Logical, to plot the result or not, TRUE by default.}
+\item{plot}{Logical, to plot the result or not, FALSE by default.}
 
 \item{group}{Vector or a simple entry name (only when query is of
 \code{SingleCellExperiment / Saurat} object). Extra grouping information
@@ -63,7 +63,4 @@ Calculates clonal scores of all different clonotypes for their level in a
  ranking. The ranking state could be customized by providing corresponding
  gene signature. For more details please see the help vignette:
 \code{vignette("help", package = "TCRanker")}.
-}
-\examples{
-TCRanker(query, tcr, plot=TRUE)
 }
