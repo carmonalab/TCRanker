@@ -23,7 +23,7 @@ rankClonalScores <- function(expMat, tcrVec, signature="default", groVec="none",
         } else message("Only support human or mouse gene signature.")
     }
 
-    ## Calculating scores
+    ## Calculating individual scores
     message("Calculating individual scores with UCell")
     individualScores <- ScoreSignatures_UCell(expMat,
                                               features=list(Tex=signature))
@@ -31,17 +31,18 @@ rankClonalScores <- function(expMat, tcrVec, signature="default", groVec="none",
     fullData <- data.frame(tcrVec, individualScores, groVec)
     colnames(fullData) <- c("clonotype", "score", "group")
     ## Gathering necessary info.
-    scores <- aggregate(score~., fullData, FUN=match.fun(FUN))
-    sizes <- aggregate(score~., fullData, FUN=length)
+    scores <- aggregate(score~., fullData, FUN=match.fun(FUN)) # clonal score
+    sizes <- aggregate(score~., fullData, FUN=length) # clonal size
     colnames(sizes)[3] <- "size"
-    sizes <- sizes[sizes$size >= minClonSize,]
-    groupSize <- aggregate(size~group,sizes,FUN=sum)
-    colnames(groupSize)[2] <- "freq"
-    sizes <- merge(sizes, groupSize, by="group")
-    sizes$freq <- sizes$size/sizes$freq
-    TCRanking <- merge(scores, sizes, by=c("clonotype","group"))
-    TCRanking$ranking <- rank(-TCRanking$score)
+    sizes <- sizes[sizes$size >= minClonSize,] # screening with minClonSize requirement
+    groupSize <- aggregate(size~group,sizes,FUN=sum) # group size
+    colnames(groupSize)[2] <- "freq" # storing group size in freq column
+    sizes <- merge(sizes, groupSize, by="group") # cbind size and freq
+    sizes$freq <- sizes$size/sizes$freq # change freq to percentage
+    TCRanking <- merge(scores, sizes, by=c("clonotype","group")) # cbind current table with score
+    TCRanking$ranking <- rank(-TCRanking$score) # assigning ranking
     TCRanking <- TCRanking[order(TCRanking$ranking),] # re-order
+    rownames(TCRanking) <- TCRanking$ranking #rename rows
     if (all(TCRanking$group=="none")) {
         TCRanking <- TCRanking[,-2]
     }
