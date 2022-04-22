@@ -17,7 +17,6 @@
 #'  \code{SingleCellExperiment / Saurat} object. By default
 #'  "counts" for \code{SingleCellExperiment} and
 #'  "RNA" for \code{Seurat}.
-#' @param plot Logical, to plot the result or not, FALSE by default.
 #' @param group Vector or a simple entry name (only when query is of
 #'  \code{SingleCellExperiment / Saurat} object). Extra grouping information
 #'  to be aggregated and included in the output. Same clonotype in different
@@ -30,15 +29,19 @@
 #'  5 by default.
 #' @param filterCell Name of the sub cell type to filter using \code{scGate},
 #'  "CD8" by default. Set to "None" to disable (unfinished function)
+#' @param keepObject Logical, to return the \code{SingleCellExperiment / Saurat}
+#'  object after scGate filtering or not (returned together with the ranking 
+#'  data frame in a list). Only valid with the query of 
+#'  \code{SingleCellExperiment / Saurat} object. False by default.
 #' @param species Charactor, "mouse" or "human", optional.
 #' @return a data frame including clonal scores and ranking
 #'  (and annotations, if \code{annotation} was included)
 #' 
 #' @export TCRanker
 
-TCRanker <- function(query, tcr, signature="default", assay=NULL, plot=FALSE,
-                     group="none", FUN="mean", minClonSize=5,
-                     filterCell="CD8T", species="auto", ...) {
+TCRanker <- function(query, tcr, signature="default", assay=NULL, group="none", 
+                     FUN="mean", minClonSize=5, filterCell="CD8T", 
+                     keepObject=FALSE, species="auto", ...) {
 }
 
 setGeneric("TCRanker")

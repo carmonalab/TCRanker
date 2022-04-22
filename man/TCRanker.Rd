@@ -9,11 +9,11 @@ TCRanker(
   tcr,
   signature = "default",
   assay = NULL,
-  plot = FALSE,
   group = "none",
   FUN = "mean",
   minClonSize = 5,
   filterCell = "CD8T",
+  keepObject = FALSE,
   species = "auto",
   ...
 )
@@ -33,8 +33,6 @@ By default is the signature for exhaustion level of CD8+ T-cells.}
 "counts" for \code{SingleCellExperiment} and
 "RNA" for \code{Seurat}.}
 
-\item{plot}{Logical, to plot the result or not, FALSE by default.}
-
 \item{group}{Vector or a simple entry name (only when query is of
 \code{SingleCellExperiment / Saurat} object). Extra grouping information
 to be aggregated and included in the output. Same clonotype in different
@@ -50,6 +48,11 @@ as input. By default, it uses "mean".}
 
 \item{filterCell}{Name of the sub cell type to filter using \code{scGate},
 "CD8" by default. Set to "None" to disable (unfinished function)}
+
+\item{keepObject}{Logical, to return the \code{SingleCellExperiment / Saurat}
+object after scGate filtering or not (returned together with the ranking 
+data frame in a list). Only valid with the query of 
+\code{SingleCellExperiment / Saurat} object. False by default.}
 
 \item{species}{Charactor, "mouse" or "human", optional.}
 }

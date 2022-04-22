@@ -7,9 +7,8 @@ TCRanker_ANY <- function(query) {
 
 ## TCRanker method for Matrix/dgCMatrix or DF query
 #' @importFrom Matrix Matrix
-TCRanker_Mat_DF <- function(query, tcr, signature="default", plot=FALSE,
-                            group="none", FUN="mean", minClonSize=5,
-                            species="auto") {
+TCRanker_Mat_DF <- function(query, tcr, signature="default", group="none", 
+                            FUN="mean", minClonSize=5, species="auto") {
     ## Get expression matrix
     expMat <- Matrix(query, sparse=TRUE)
 
@@ -21,9 +20,6 @@ TCRanker_Mat_DF <- function(query, tcr, signature="default", plot=FALSE,
 
     TCRanking <- rankClonalScores(expMat, tcrVec, signature, groVec,
                                   species, FUN, minClonSize)
-
-    if (plot) plotClonalScores(TCRanking)
-
     return(TCRanking)
 }
 
@@ -31,8 +27,9 @@ TCRanker_Mat_DF <- function(query, tcr, signature="default", plot=FALSE,
 #' @importFrom SummarizedExperiment assay colData 
 #' @importFrom SingleCellExperiment SingleCellExperiment
 TCRanker_SCE <- function(query, tcr, signature="default", assay="counts",
-                         plot=FALSE, group="none", FUN="mean", minClonSize=5,
-                         filterCell="CD8T", species="auto") {
+                         group="none", FUN="mean", minClonSize=5,
+                         filterCell="CD8T", keepObject=FALSE, 
+                         species="auto") {
     ## Filter functional cluster
     if(filterCell != "None"){
         message("Filtering ", filterCell, " Cells. ",
@@ -72,8 +69,11 @@ TCRanker_SCE <- function(query, tcr, signature="default", assay="counts",
 
     TCRanking <- rankClonalScores(expMat, tcrVec, signature, groVec,
                                   species, FUN, minClonSize)
-
-    if (plot) plotClonalScores(TCRanking)
+    
+    if(keepObject){
+        result_list <- list("TCRanking" = TCRanking, "filteredQuery" = query)
+        return(result_list) 
+    }
 
     return(TCRanking)
 }
@@ -81,8 +81,9 @@ TCRanker_SCE <- function(query, tcr, signature="default", assay="counts",
 ## TCRanker method for Seurat object query
 #' @importFrom SeuratObject GetAssayData FetchData
 TCRanker_Seurat <- function(query, tcr, signature="default", assay="RNA",
-                            plot=FALSE, group="none", FUN="mean", minClonSize=5,
-                            filterCell="CD8T", species="auto") {
+                            group="none", FUN="mean", minClonSize=5,
+                            filterCell="CD8T", keepObject=FALSE, 
+                            species="auto") {
     ## Filter functional cluster
     if(filterCell != "None"){
         message("Filtering ", filterCell, " Cells. ",
@@ -122,9 +123,12 @@ TCRanker_Seurat <- function(query, tcr, signature="default", assay="RNA",
 
     TCRanking <- rankClonalScores(expMat, tcrVec, signature, groVec,
                                          species, FUN, minClonSize)
-
-    if (plot) plot(plotClonalScores(TCRanking))
-
+    
+    if(keepObject){
+        result_list <- list("TCRanking" = TCRanking, "filteredQuery" = query)
+        return(result_list) 
+    }
+    
     return(TCRanking)
 }
 
