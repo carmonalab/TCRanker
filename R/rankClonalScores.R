@@ -6,7 +6,7 @@ rankClonalScores <- function(expMat, tcrVec, signature="default", groVec="none",
 
     ## Preparing gene signature, Exhaustion signature as default
     if (all(signature=="default")) {
-        if (!(exhaustion | proliferation)) {
+        if (!(exhaustion|proliferation)) {
             stop("Please provide a customized gene signature, ",
                  "or enable at least one default gene signature")
         }
@@ -39,24 +39,18 @@ rankClonalScores <- function(expMat, tcrVec, signature="default", groVec="none",
                                      'TNFRSF9', 'TIGIT', 'CTSW', 'CCL4', 'CD63',
                                      'CCL3', 'IFNG', 'CXCR6', 'FASLG', 'RBPJ',
                                      'CHST12', 'FAM3C', 'CSF1')
-        } else message("Only support human or mouse default gene signature.")
+        } else stop("Only support human or mouse default gene signature.")
     }
     if (proliferation) {
         if (species == "mouse") {
-            features$proliferation <- c('Cenpf', 'Spc25', 'Casc5', 'Rad51', 
-                                        'Nusap1', 'Ckap2l', 'Tpx2', 'Ube2c',
-                                        'Hmgb3', 'Ccna2', 'Cks1b', 'Cenpe',
-                                        'H2afz', 'Depdc1a', 'Smc2', 'Cdc20',
-                                        'Cdca8', 'Hmgn2', 'Stmn1', 'Cenpa',
-                                        'Tacc3', 'Cdca3', 'Plk1', 'Mki67',
-                                        'Cenpw', 'Cdk1', 'Shcbp1', 'Hmgb2',
-                                        'Gm10282', 'Asf1b', 'Cdkn3', 'Spc24',
-                                        '2810417H13Rik', 'Ccnb2', 'Hmmr',
-                                        'Aurkb', 'Fam64a', 'Top2a', 'Tk1',
-                                        'Birc5', 'Hist1h2ap', 'Hist1h2ae',
-                                        'Cks2', 'Ccnb1', 'Rrm2', 'Tuba1b',
-                                        'Ska1', 'Kif11', 'Cep55')
-        }
+            features$proliferation <- 
+                c(scGate::genes.blacklist.default$Mm$cellCycle.G1S,
+                  scGate::genes.blacklist.default$Mm$cellCycle.G2M)
+        } else if (species == "human") {
+            features$proliferation <- 
+                c(scGate::genes.blacklist.default$Hs$cellCycle.G1S,
+                  scGate::genes.blacklist.default$Hs$cellCycle.G2M)
+        } else stop("Only support human or mouse default gene signature.")
     }
     
     ## Calculating individual scores

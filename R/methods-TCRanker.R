@@ -19,8 +19,8 @@ TCRanker_Mat_DF <- function(query, tcr, signature="default", group="none",
     ## Get group vector
     groVec <- getGroup(group, expMat)
 
-    TCRanking <- rankClonalScores(expMat, tcrVec, signature, groVec,
-                                  species, FUN, minClonSize)
+    TCRanking <- rankClonalScores(expMat, tcrVec, signature, groVec, exhaustion,
+                                  proliferation, species, FUN, minClonSize)
     return(TCRanking)
 }
 
@@ -68,8 +68,8 @@ TCRanker_SCE <- function(query, tcr, signature="default", assay="counts",
         message("Using group meta.data ", group)
     } else groVec <- getGroup(group, expMat)
 
-    TCRanking <- rankClonalScores(expMat, tcrVec, signature, groVec,
-                                  species, FUN, minClonSize)
+    TCRanking <- rankClonalScores(expMat, tcrVec, signature, groVec, exhaustion,
+                                  proliferation, species, FUN, minClonSize)
     
     if(keepObject){
         result_list <- list("TCRanking" = TCRanking, "filteredQuery" = query)
@@ -122,8 +122,8 @@ TCRanker_Seurat <- function(query, tcr, signature="default", assay="RNA",
         message("Using group meta.data ",group)
     } else groVec <- getGroup(group, expMat)
 
-    TCRanking <- rankClonalScores(expMat, tcrVec, signature, groVec,
-                                         species, FUN, minClonSize)
+    TCRanking <- rankClonalScores(expMat, tcrVec, signature, groVec, exhaustion,
+                                  proliferation, species, FUN, minClonSize)
     
     if(keepObject){
         result_list <- list("TCRanking" = TCRanking, "filteredQuery" = query)
