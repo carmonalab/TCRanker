@@ -22,26 +22,31 @@
 #'  to be aggregated and included in the output. Same clonotype in different
 #'  groups would be aggregated separately. Even thought optional, it's still
 #'  recommended to be included.
+#' @param exhaustion Logical, to include exhaustion scores and ranking in the
+#'  output. \code{TRUE} by default.
+#' @param proliferation Logical, to include proliferation scores and ranking in
+#'  the output. \code{TRUE} by default.
+#' @param species Charactor, "mouse" or "human", optional.
 #' @param FUN Function used to aggregate scores of the same clonotype. It could
 #'  be mean, median or customized functions that take a numeric vector or list
 #'  as input. By default, it uses "mean".
 #' @param minClonSize Threshold of clonal size that would be taken into account,
 #'  5 by default.
 #' @param filterCell Name of the sub cell type to filter using \code{scGate},
-#'  "CD8" by default. Set to "None" to disable (unfinished function)
+#'  "CD8" by default. Set to "none" to disable (unfinished function)
 #' @param keepObject Logical, to return the \code{SingleCellExperiment / Saurat}
 #'  object after scGate filtering or not (returned together with the ranking 
 #'  data frame in a list). Only valid with the query of 
-#'  \code{SingleCellExperiment / Saurat} object. False by default.
-#' @param species Charactor, "mouse" or "human", optional.
+#'  \code{SingleCellExperiment / Saurat} object. \code{FALSE} by default.
 #' @return a data frame including clonal scores and ranking
-#'  (and annotations, if \code{annotation} was included)
+#'  (and groups, if \code{group} was specified)
 #' 
 #' @export TCRanker
 
 TCRanker <- function(query, tcr, signature="default", assay=NULL, group="none", 
-                     FUN="mean", minClonSize=5, filterCell="CD8T", 
-                     keepObject=FALSE, species="auto", ...) {
+                     exhaustion=TRUE, proliferation=TRUE,
+                     species="auto", FUN="mean", minClonSize=5, 
+                     filterCell="CD8T", keepObject=FALSE, ...) {
 }
 
 setGeneric("TCRanker")

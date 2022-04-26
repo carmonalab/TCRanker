@@ -10,11 +10,13 @@ TCRanker(
   signature = "default",
   assay = NULL,
   group = "none",
+  exhaustion = TRUE,
+  proliferation = TRUE,
+  species = "auto",
   FUN = "mean",
   minClonSize = 5,
   filterCell = "CD8T",
   keepObject = FALSE,
-  species = "auto",
   ...
 )
 }
@@ -39,6 +41,14 @@ to be aggregated and included in the output. Same clonotype in different
 groups would be aggregated separately. Even thought optional, it's still
 recommended to be included.}
 
+\item{exhaustion}{Logical, to include exhaustion scores and ranking in the
+output. \code{TRUE} by default.}
+
+\item{proliferation}{Logical, to include proliferation scores and ranking in
+the output. \code{TRUE} by default.}
+
+\item{species}{Charactor, "mouse" or "human", optional.}
+
 \item{FUN}{Function used to aggregate scores of the same clonotype. It could
 be mean, median or customized functions that take a numeric vector or list
 as input. By default, it uses "mean".}
@@ -47,18 +57,16 @@ as input. By default, it uses "mean".}
 5 by default.}
 
 \item{filterCell}{Name of the sub cell type to filter using \code{scGate},
-"CD8" by default. Set to "None" to disable (unfinished function)}
+"CD8" by default. Set to "none" to disable (unfinished function)}
 
 \item{keepObject}{Logical, to return the \code{SingleCellExperiment / Saurat}
 object after scGate filtering or not (returned together with the ranking 
 data frame in a list). Only valid with the query of 
-\code{SingleCellExperiment / Saurat} object. False by default.}
-
-\item{species}{Charactor, "mouse" or "human", optional.}
+\code{SingleCellExperiment / Saurat} object. \code{FALSE} by default.}
 }
 \value{
 a data frame including clonal scores and ranking
- (and annotations, if \code{annotation} was included)
+ (and groups, if \code{group} was specified)
 }
 \description{
 Calculates clonal scores of all different clonotypes for their level in a

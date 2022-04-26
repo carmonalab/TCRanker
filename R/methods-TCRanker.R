@@ -8,7 +8,8 @@ TCRanker_ANY <- function(query) {
 ## TCRanker method for Matrix/dgCMatrix or DF query
 #' @importFrom Matrix Matrix
 TCRanker_Mat_DF <- function(query, tcr, signature="default", group="none", 
-                            FUN="mean", minClonSize=5, species="auto") {
+                            exhaustion=TRUE, proliferation=TRUE,
+                            species="auto", FUN="mean", minClonSize=5) {
     ## Get expression matrix
     expMat <- Matrix(query, sparse=TRUE)
 
@@ -27,11 +28,11 @@ TCRanker_Mat_DF <- function(query, tcr, signature="default", group="none",
 #' @importFrom SummarizedExperiment assay colData 
 #' @importFrom SingleCellExperiment SingleCellExperiment
 TCRanker_SCE <- function(query, tcr, signature="default", assay="counts",
-                         group="none", FUN="mean", minClonSize=5,
-                         filterCell="CD8T", keepObject=FALSE, 
-                         species="auto") {
+                         group="none", exhaustion=TRUE, proliferation=TRUE,
+                         species="auto", FUN="mean", minClonSize=5,
+                         filterCell="CD8T", keepObject=FALSE) {
     ## Filter functional cluster
-    if(filterCell != "None"){
+    if(filterCell != "none"){
         message("Filtering ", filterCell, " Cells. ",
                 "Set filterCell='None' to disable pre-filtering")
         if(species=="auto") species <- getSpecies(genes=rownames(query))
@@ -81,11 +82,11 @@ TCRanker_SCE <- function(query, tcr, signature="default", assay="counts",
 ## TCRanker method for Seurat object query
 #' @importFrom SeuratObject GetAssayData FetchData
 TCRanker_Seurat <- function(query, tcr, signature="default", assay="RNA",
-                            group="none", FUN="mean", minClonSize=5,
-                            filterCell="CD8T", keepObject=FALSE, 
-                            species="auto") {
+                            group="none", exhaustion=TRUE, proliferation=TRUE,
+                            species="auto", FUN="mean", minClonSize=5,
+                            filterCell="CD8T", keepObject=FALSE) {
     ## Filter functional cluster
-    if(filterCell != "None"){
+    if(filterCell != "none"){
         message("Filtering ", filterCell, " Cells. ",
                 "Set filterCell='None' to disable pre-filtering")
         if(species=="auto") species <- getSpecies(genes=rownames(query))

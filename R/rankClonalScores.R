@@ -1,48 +1,97 @@
 ## Function rankClonalScores
 #' @importFrom UCell ScoreSignatures_UCell
 rankClonalScores <- function(expMat, tcrVec, signature="default", groVec="none",
+                             exhaustion=TRUE, proliferation=TRUE,
                              species="auto", FUN="mean", minClonSize=5){
 
     ## Preparing gene signature, Exhaustion signature as default
     if (all(signature=="default")) {
-        if (species=="auto") {
-            species <- getSpecies(genes=rownames(expMat))
+        if (!(exhaustion | proliferation)) {
+            stop("Please provide a customized gene signature, ",
+                 "or enable at least one default gene signature")
         }
-        if (species == "mouse"){
+        features <- list()
+    } else {
+        if (class(signature)=='character') {
+            features <- list()
+            features$user <- signature
+        } else if (class(signature)=='list') {
+            if (is.null(names(signature))) {
+                stop("signature list should contain names")
+            } else features <- signature
+        } else stop("Unrecognisable gene signature format")
+    }
+    
+    if (species=="auto") species <- getSpecies(genes=rownames(expMat))
+    
+    if (exhaustion) {
+        if (species == "mouse") {
             message("Using default mouse gene signature.")
-            signature <- c('Lag3', 'Prf1', 'Havcr2', 'Gzmb', 'Nkg7','Ctsd',
-                           'Klrd1', 'Id2', 'Cst7', 'Pdcd1', 'Tnfrsf9', 'Tigit',
-                           'Ctsw', 'Ccl4', 'Cd63', 'Ccl3', 'Ifng', 'Cxcr6',
-                           'Fasl', 'Rbpj', 'Chst12', 'Fam3c', 'Csf1')
+            features$exhaustion <- c('Lag3', 'Prf1', 'Havcr2', 'Gzmb', 'Nkg7',
+                                     'Ctsd', 'Id2', 'Klrd1', 'Cst7', 'Pdcd1',
+                                     'Tnfrsf9', 'Tigit', 'Ctsw', 'Ccl4', 'Cd63',
+                                     'Ccl3', 'Ifng', 'Cxcr6', 'Fasl', 'Rbpj',
+                                     'Chst12', 'Fam3c', 'Csf1')
         } else if (species == "human") {
             message("Using default human gene signature.")
-            signature <- c('LAG3', 'PRF1', 'HAVCR2', 'GZMB', 'NKG7', 'CTSD',
-                           'KLRD1', 'ID2', 'CST7', 'PDCD1', 'TNFRSF9', 'TIGIT',
-                           'CTSW', 'CCL4', 'CD63', 'CCL3', 'IFNG', 'CXCR6',
-                           'FASLG', 'RBPJ', 'CHST12', 'FAM3C', 'CSF1')
-        } else message("Only support human or mouse gene signature.")
+            features$exhaustion <- c('LAG3', 'PRF1', 'HAVCR2', 'GZMB', 'NKG7', 
+                                     'CTSD', 'ID2', 'KLRD1', 'CST7', 'PDCD1',
+                                     'TNFRSF9', 'TIGIT', 'CTSW', 'CCL4', 'CD63',
+                                     'CCL3', 'IFNG', 'CXCR6', 'FASLG', 'RBPJ',
+                                     'CHST12', 'FAM3C', 'CSF1')
+        } else message("Only support human or mouse default gene signature.")
     }
-
+    if (proliferation) {
+        if (species == "mouse") {
+            features$proliferation <- c('Cenpf', 'Spc25', 'Casc5', 'Rad51', 
+                                        'Nusap1', 'Ckap2l', 'Tpx2', 'Ube2c',
+                                        'Hmgb3', 'Ccna2', 'Cks1b', 'Cenpe',
+                                        'H2afz', 'Depdc1a', 'Smc2', 'Cdc20',
+                                        'Cdca8', 'Hmgn2', 'Stmn1', 'Cenpa',
+                                        'Tacc3', 'Cdca3', 'Plk1', 'Mki67',
+                                        'Cenpw', 'Cdk1', 'Shcbp1', 'Hmgb2',
+                                        'Gm10282', 'Asf1b', 'Cdkn3', 'Spc24',
+                                        '2810417H13Rik', 'Ccnb2', 'Hmmr',
+                                        'Aurkb', 'Fam64a', 'Top2a', 'Tk1',
+                                        'Birc5', 'Hist1h2ap', 'Hist1h2ae',
+                                        'Cks2', 'Ccnb1', 'Rrm2', 'Tuba1b',
+                                        'Ska1', 'Kif11', 'Cep55')
+        }
+    }
+    
     ## Calculating individual scores
     message("Calculating individual scores with UCell")
-    individualScores <- ScoreSignatures_UCell(expMat,
-                                              features=list(Tex=signature))
+    individualScores <- ScoreSignatures_UCell(expMat, features=features)
+    
     ## Creating full data frame
-    fullData <- data.frame(tcrVec, individualScores, groVec)
-    colnames(fullData) <- c("clonotype", "score", "group")
+    fullData <- data.frame(tcrVec, groVec, individualScores)
+    colnames(fullData) <- c("clonotype", "group", paste0(names(features),'.score'))
+    
     ## Gathering necessary info.
-    scores <- aggregate(score~., fullData, FUN=match.fun(FUN)) # clonal score
-    sizes <- aggregate(score~., fullData, FUN=length) # clonal size
+    scores <- aggregate(.~clonotype+group, fullData, FUN=match.fun(FUN)) # clonal score
+    sizes <- aggregate(.~clonotype+group, fullData, FUN=length) # clonal size
     colnames(sizes)[3] <- "size"
-    sizes <- sizes[sizes$size >= minClonSize,] # screening with minClonSize requirement
+    sizes <- sizes[sizes$size >= minClonSize,1:3] # screening with minClonSize requirement
     groupSize <- aggregate(size~group,sizes,FUN=sum) # group size
     colnames(groupSize)[2] <- "freq" # storing group size in freq column
     sizes <- merge(sizes, groupSize, by="group") # cbind size and freq
     sizes$freq <- sizes$size/sizes$freq # change freq to percentage
-    TCRanking <- merge(scores, sizes, by=c("clonotype","group")) # cbind current table with score
-    TCRanking$ranking <- rank(-TCRanking$score) # assigning ranking
-    TCRanking <- TCRanking[order(TCRanking$ranking),] # re-order
-    rownames(TCRanking) <- TCRanking$ranking #rename rows
+    TCRanking <- merge(sizes, scores, by=c("clonotype","group")) # cbind current table with score
+    
+    ## Rankings according to each signature score
+    rankings <- vapply(X=-TCRanking[,5:ncol(TCRanking)],
+                       FUN = rank,
+                       FUN.VALUE = numeric(nrow(TCRanking)))
+    colnames(rankings) <- paste0(colnames(rankings),'.ranking')
+    
+    TCRanking <- cbind(TCRanking, rankings) # combine ranking to TCRanking
+    
+    ## Reorder columns
+    colOrder <- c(5:(4+ncol(individualScores)))
+    colOrder <- c(rbind(colOrder,colOrder+ncol(individualScores)))
+    TCRanking <- TCRanking[,c(1:4,colOrder)]
+    
+    ## remove group column if it wasn't assigned at first
     if (all(TCRanking$group=="none")) {
         TCRanking <- TCRanking[,-2]
     }
