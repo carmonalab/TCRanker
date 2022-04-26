@@ -76,7 +76,7 @@ rankClonalScores <- function(expMat, tcrVec, signature="default", groVec="none",
     rankings <- vapply(X=-TCRanking[,5:ncol(TCRanking)],
                        FUN = rank,
                        FUN.VALUE = numeric(nrow(TCRanking)))
-    colnames(rankings) <- paste0(colnames(rankings),'.ranking')
+    colnames(rankings) <- paste0(names(features),'.ranking')
     
     TCRanking <- cbind(TCRanking, rankings) # combine ranking to TCRanking
     
