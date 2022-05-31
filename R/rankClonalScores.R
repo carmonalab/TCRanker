@@ -73,7 +73,7 @@ rankClonalScores <- function(expMat, tcrVec, signature="default", groVec="none",
     TCRanking <- merge(sizes, scores, by=c("clonotype","group")) # cbind current table with score
     
     ## Rankings according to each signature score
-    rankings <- vapply(X=-TCRanking[,5:ncol(TCRanking)],
+    rankings <- vapply(X=-as.data.frame(TCRanking[,5:ncol(TCRanking)]),
                        FUN = rank,
                        FUN.VALUE = numeric(nrow(TCRanking)))
     colnames(rankings) <- paste0(names(features),'.ranking')

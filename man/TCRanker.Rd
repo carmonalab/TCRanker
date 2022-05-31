@@ -30,8 +30,7 @@ TCRs clonotype info.}
 \item{signature}{The gene signature that represents a cell status.
 By default are the signatures of exhaustion and proliferation level of 
 CD8+ T cells. For custom gene signatures, please refer
- \href{https://carmonalab.github.io/TCRanker.demo/TCRanker.demo.html}
- {TCRanker.demo}}
+ \href{https://carmonalab.github.io/TCRanker.demo/demo.html}{TCRanker.demo}}
 
 \item{assay}{Name of expression data assay, By default "counts" for
 \code{SingleCellExperiment} and "RNA" for \code{Seurat}.}
