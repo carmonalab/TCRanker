@@ -1,27 +1,7 @@
 ## TCRanker method for unsupported query class
 TCRanker_ANY <- function(query) {
     stop("Unrecognized input query format.",
-         "Please use one of the following formats: \n",
-         "SCE; Seurat; matrix; sparse Matrix; data frame.")
-}
-
-## TCRanker method for Matrix/dgCMatrix or DF query
-#' @importFrom Matrix Matrix
-TCRanker_Mat_DF <- function(query, tcr, signature="default", group="none", 
-                            exhaustion=TRUE, proliferation=TRUE,
-                            species="auto", FUN="mean", minClonSize=5) {
-    ## Get expression matrix
-    expMat <- Matrix(query, sparse=TRUE)
-
-    ## Get TCR vector
-    tcrVec <- getTCR(tcr, expMat)
-
-    ## Get group vector
-    groVec <- getGroup(group, expMat)
-
-    TCRanking <- rankClonalScores(expMat, tcrVec, signature, groVec, exhaustion,
-                                  proliferation, species, FUN, minClonSize)
-    return(TCRanking)
+         "Please use Seurat or SCE object as the input format of query;")
 }
 
 ## TCRanker method for SCE object query
@@ -30,15 +10,16 @@ TCRanker_Mat_DF <- function(query, tcr, signature="default", group="none",
 TCRanker_SCE <- function(query, tcr, signature="default", assay="counts",
                          group="none", exhaustion=TRUE, proliferation=TRUE,
                          species="auto", FUN="mean", minClonSize=5,
-                         filterCell="CD8T", keepObject=FALSE) {
+                         filterCell="CD8T", strictFilter=TRUE, 
+                         keepObject=FALSE) {
     ## Filter functional cluster
     if(filterCell != "none"){
         message("Filtering ", filterCell, " Cells. ",
-                "Set filterCell='None' to disable pre-filtering")
+                "Set filterCell='none' to disable pre-filtering")
         if(species=="auto") species <- getSpecies(genes=rownames(query))
         query <- as.Seurat(query, counts = assay)
-        query <- filterCells(query, species=species, cluster=filterCell,
-                             assay="RNA")
+        query <- filterCells(query, tcr, species=species, cluster=filterCell,
+                             assay="RNA", strictFilter)
         query <- as.SingleCellExperiment(query)
     }
 
@@ -76,6 +57,7 @@ TCRanker_SCE <- function(query, tcr, signature="default", assay="counts",
         return(result_list) 
     }
 
+    message("Done")
     return(TCRanking)
 }
 
@@ -84,14 +66,15 @@ TCRanker_SCE <- function(query, tcr, signature="default", assay="counts",
 TCRanker_Seurat <- function(query, tcr, signature="default", assay="RNA",
                             group="none", exhaustion=TRUE, proliferation=TRUE,
                             species="auto", FUN="mean", minClonSize=5,
-                            filterCell="CD8T", keepObject=FALSE) {
+                            filterCell="CD8T", strictFilter=TRUE, 
+                            keepObject=FALSE) {
     ## Filter functional cluster
     if(filterCell != "none"){
         message("Filtering ", filterCell, " Cells. ",
-                "Set filterCell='None' to disable pre-filtering")
+                "Set filterCell='none' to disable pre-filtering")
         if(species=="auto") species <- getSpecies(genes=rownames(query))
-        query <- filterCells(query, species=species, cluster=filterCell,
-                             assay=assay)
+        query <- filterCells(query, tcr, species=species, cluster=filterCell,
+                             assay=assay, strictFilter)
     }
 
     ## Get expression matrix
@@ -130,12 +113,10 @@ TCRanker_Seurat <- function(query, tcr, signature="default", assay="RNA",
         return(result_list) 
     }
     
+    message("Done")
     return(TCRanking)
 }
 
 setMethod("TCRanker", signature(query="ANY"), TCRanker_ANY)
-setMethod("TCRanker", signature(query="data.frame"), TCRanker_Mat_DF)
-setMethod("TCRanker", signature(query="matrix"), TCRanker_Mat_DF)
-setMethod("TCRanker", signature(query="dgCMatrix"), TCRanker_Mat_DF)
 setMethod("TCRanker", signature(query="SingleCellExperiment"), TCRanker_SCE)
 setMethod("TCRanker", signature(query="Seurat"), TCRanker_Seurat)
