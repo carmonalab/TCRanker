@@ -56,7 +56,7 @@ as input and return a single numeric. By default, it uses "mean".}
 5 by default.}
 
 \item{filterCell}{Name of the sub cell type to filter using \code{scGate},
-"CD8T" by default. Set to "none" to disable.}
+"CD8T" by default. Set to \code{NULL} to disable.}
 
 \item{strictFilter}{Logical, to exclude impure cells in pure clonotype or
 not. Only valid when \code{filterCell} is on. \code{TRUE} by default.}

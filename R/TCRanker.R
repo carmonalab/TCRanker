@@ -31,7 +31,7 @@
 #' @param minClonSize Threshold of clonal size that would be taken into account,
 #'  5 by default.
 #' @param filterCell Name of the sub cell type to filter using \code{scGate},
-#'  "CD8T" by default. Set to "none" to disable.
+#'  "CD8T" by default. Set to \code{NULL} to disable.
 #' @param strictFilter Logical, to exclude impure cells in pure clonotype or
 #'  not. Only valid when \code{filterCell} is on. \code{TRUE} by default.
 #' @param keepObject Logical, to return the \code{SingleCellExperiment / Saurat}

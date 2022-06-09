@@ -13,9 +13,9 @@ TCRanker_SCE <- function(query, tcr, signature="default", assay="counts",
                          filterCell="CD8T", strictFilter=TRUE, 
                          keepObject=FALSE) {
     ## Filter functional cluster
-    if(filterCell != "none"){
+    if(!is.null(filterCell)){
         message("Filtering ", filterCell, " Cells. ",
-                "Set filterCell='none' to disable pre-filtering")
+                "Set filterCell=NULL to disable pre-filtering")
         if(species=="auto") species <- getSpecies(genes=rownames(query))
         query <- as.Seurat(query, counts = assay)
         query <- filterCells(query, tcr, species=species, cluster=filterCell,
@@ -69,9 +69,9 @@ TCRanker_Seurat <- function(query, tcr, signature="default", assay="RNA",
                             filterCell="CD8T", strictFilter=TRUE, 
                             keepObject=FALSE) {
     ## Filter functional cluster
-    if(filterCell != "none"){
+    if(!is.null(filterCell)){
         message("Filtering ", filterCell, " Cells. ",
-                "Set filterCell='none' to disable pre-filtering")
+                "Set filterCell=NULL to disable pre-filtering")
         if(species=="auto") species <- getSpecies(genes=rownames(query))
         query <- filterCells(query, tcr, species=species, cluster=filterCell,
                              assay=assay, strictFilter)
