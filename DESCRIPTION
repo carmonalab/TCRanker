@@ -9,7 +9,7 @@ Description: An algorithm to rank TCR clonotypes. Given a gene signature (exhaus
 Depends: R(>= 4.2.0)
 Imports: methods,
     SingleCellExperiment,
-    SummarizedExperiment
+    SummarizedExperiment,
     UCell,
     Seurat,
     SeuratObject
