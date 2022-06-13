@@ -1,14 +1,30 @@
 Package: TCRanker
 Type: Package
-Title: Rank TCRs by clonotypes for their level in a certain state
-Version: 0.1.7
+Title: Rank TCRs by gene set enrichment
+Version: 0.1.8
 Authors@R: 
     person("Changsheng", "Li", , "changsheng.li@tutanota.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-8968-3156"))
-Description: A Continuous quantifying algorithm of TCR clonotypes. It Calculates clonal scores of all different clonotypes for their level in a certain state, exhaustion level by default, and provides their final ranking. The ranking state could be customized by providing corresponding gene signature.
-License: GNU General Public License v3.0
+Description: An algorithm to rank TCR clonotypes. Given a gene signature (exhaustion signature by default), clonotypes with identical TCR are ranked by their average signature score. This allows prioritizing sets of TCRs according to specific (and customizable) transcriptomics characteristics, e.g. exhaustion level, proliferation or clonotype size.
+Depends: R(>= 4.2.0)
+Imports: methods,
+    SingleCellExperiment,
+    SummarizedExperiment
+    UCell,
+    Seurat,
+    SeuratObject
+Suggests: BiocStyle,
+    knitr,
+    rmarkdown,
+    DT,
+    scRepertoire,
+    GEOquery
+biocViews: SingleCell,
+    Transcriptomics,
+    GeneExpression
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.2.0
 VignetteBuilder: knitr
-Suggests: BiocStyle, knitr, rmarkdown
+
