@@ -85,6 +85,8 @@ rankClonalScores <- function(expMat, tcrVec, signature="default", groVec="none",
     colOrder <- c(rbind(colOrder,colOrder+ncol(individualScores)))
     TCRanking <- TCRanking[,c(1:4,colOrder)]
     
+    ## Reorder rows
+    TCRanking <- TCRanking[order(TCRanking[,6]),]
     ## remove group column if it wasn't assigned at first
     if (all(TCRanking$group=="none")) {
         TCRanking <- TCRanking[,-2]

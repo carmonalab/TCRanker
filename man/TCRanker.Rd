@@ -24,8 +24,8 @@ TCRanker(
 \arguments{
 \item{query}{\code{SingleCellExperiment} object or \code{Seurat} object.}
 
-\item{tcr}{A colname of \code{query} of clonotypes or a vector containing
-TCRs clonotype info.}
+\item{tcr}{A colname of \code{query} of clonotypes in meta data or a vector
+containing TCR clonotypes info.}
 
 \item{signature}{The gene signature that represents a cell status.
 By default are the signatures of exhaustion and proliferation level of 
@@ -35,10 +35,10 @@ CD8+ T cells. For custom gene signatures, please refer
 \item{assay}{Name of expression data assay, By default "counts" for
 \code{SingleCellExperiment} and "RNA" for \code{Seurat}.}
 
-\item{group}{A colname of \code{query} or a vector. Extra group information
-to be aggregated and included in the output. Same clonotype in different
-groups would be aggregated separately. Even thought optional, it's still
-recommended to be included.}
+\item{group}{A colname of \code{query} in meta data, or a vector. Extra group
+information to be aggregated and included in the output in case of multiple
+ samples. Same clonotype in different groups would be aggregated separately.
+ Even though optional, it's still recommended to be included.}
 
 \item{exhaustion}{Logical, to include exhaustion scores and ranking in the
 output. \code{TRUE} by default.}
@@ -46,7 +46,7 @@ output. \code{TRUE} by default.}
 \item{proliferation}{Logical, to include proliferation scores and ranking in
 the output. \code{TRUE} by default.}
 
-\item{species}{Charactor, "mouse"/"human", will be auto-detected if omitted.}
+\item{species}{Character, "mouse"/"human", will be auto-detected if omitted.}
 
 \item{FUN}{Function used to aggregate scores of the same clonotype. It could
 be mean, median or customized functions that take a numeric vector or list

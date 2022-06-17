@@ -8,23 +8,23 @@
 #' \code{vignette("help", package = "TCRanker")}.
 #'
 #' @param query \code{SingleCellExperiment} object or \code{Seurat} object.
-#' @param tcr A colname of \code{query} of clonotypes or a vector containing
-#'  TCRs clonotype info.
+#' @param tcr A colname of \code{query} of clonotypes in meta data or a vector
+#'  containing TCR clonotypes info.
 #' @param signature The gene signature that represents a cell status.
 #'  By default are the signatures of exhaustion and proliferation level of 
 #'  CD8+ T cells. For custom gene signatures, please refer
 #'   \href{https://carmonalab.github.io/TCRanker.demo/demo.html}{TCRanker.demo}
 #' @param assay Name of expression data assay, By default "counts" for
 #'  \code{SingleCellExperiment} and "RNA" for \code{Seurat}.
-#' @param group A colname of \code{query} or a vector. Extra group information
-#'  to be aggregated and included in the output. Same clonotype in different
-#'  groups would be aggregated separately. Even thought optional, it's still
-#'  recommended to be included.
+#' @param group A colname of \code{query} in meta data, or a vector. Extra group
+#' information to be aggregated and included in the output in case of multiple
+#'  samples. Same clonotype in different groups would be aggregated separately.
+#'  Even though optional, it's still recommended to be included.
 #' @param exhaustion Logical, to include exhaustion scores and ranking in the
 #'  output. \code{TRUE} by default.
 #' @param proliferation Logical, to include proliferation scores and ranking in
 #'  the output. \code{TRUE} by default.
-#' @param species Charactor, "mouse"/"human", will be auto-detected if omitted.
+#' @param species Character, "mouse"/"human", will be auto-detected if omitted.
 #' @param FUN Function used to aggregate scores of the same clonotype. It could
 #'  be mean, median or customized functions that take a numeric vector or list
 #'  as input and return a single numeric. By default, it uses "mean".
