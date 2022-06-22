@@ -14,7 +14,6 @@ TCRanker workflow
 
 <br/>
 
-
 `TCRanker`  has dependency on:
 
 - R (>= 4.2.0)
@@ -30,7 +29,6 @@ Currently, `TCRanker` supports both `Seurat` and `SingleCellExperiment` object a
 If you want to know how to prepare the data set as input query, we provide you an demonstration of how to prepare a basic Seurat object containing expression matrix together with TCR meta data [here](https://carmonalab.github.io/TCRanker.demo/preparation.html)
 
 <br/>
-
 
 ## TCRanker
 The function has following parameters:
@@ -67,7 +65,7 @@ The default output would be a data frame with following structure:
 
 If `group` was provided, it'd be the column right after `clonotype`
 
-If custom gene signature(s) was(were) provided, it'd be 2 extra columns for each signature. They would be named "SignatureName.score" and "SignatureName.ranking" and positioned prior to the exhaustion and proliferation columns.
+If custom gene signature(s) was(were) provided, there would be 2 extra columns for each signature. They would be named "SignatureName.score" and "SignatureName.ranking" and positioned prior to the exhaustion and proliferation columns.
 
 <br/>
 
