@@ -14,11 +14,20 @@ TCRanker workflow
 
 <br/>
 
+## Installation
 `TCRanker`  has dependency on:
 
 - R (>= 4.2.0)
-- [scGate](https://github.com/carmonalab/scGate) (>= 2.0.0)
-- [UCell](https://github.com/carmonalab/UCell) (>= 1.0.2)
+- [UCell](https://github.com/carmonalab/UCell) (>= 2.0.0)
+- [scGate](https://github.com/carmonalab/scGate) (>= 1.0.2)
+
+To install `TCRanker`, run:
+```
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+remotes::install_github("carmonalab/scGate")
+remotes::install_github("carmonalab/TCRanker")
+```
 
 <br/>
 
