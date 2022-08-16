@@ -74,9 +74,9 @@ The default output would be a data frame with following structure:
 
 If `group` was provided, it'd be the column right after `clonotype`
 
-If custom gene signature(s) was(were) provided, there would be 2 extra columns for each signature. They would be named "SignatureName.score" and "SignatureName.ranking" and positioned prior to the exhaustion and proliferation columns.
+If custom gene signature(s) were provided, there would be 2 extra columns for each signature. They would be named "SignatureName.score" and "SignatureName.ranking" and positioned prior to the exhaustion and proliferation columns.
 
 <br/>
 
 ## Sequential analysis
-In order to conduct further in vitro validation or upon the ranking result, you might need to assemble the full  nucleotide sequence based on the output. You can check [here](https://carmonalab.github.io/TCRanker.demo/stitchr.html) to see how to use [stitchr](https://github.com/JamieHeather/stitchr) ([Heather et al., (2022)](https://academic.oup.com/nar/advance-article/doi/10.1093/nar/gkac190/6553689)) as an example.
+In order to conduct further in vitro validation or upon the ranking result, you might need to assemble the full nucleotide sequence based on the output. You can check [here](https://carmonalab.github.io/TCRanker.demo/stitchr.html) to see how to use [stitchr](https://github.com/JamieHeather/stitchr) ([Heather et al., (2022)](https://academic.oup.com/nar/advance-article/doi/10.1093/nar/gkac190/6553689)) as an example.
